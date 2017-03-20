@@ -14,7 +14,7 @@ import org.bytedeco.javacpp.indexer.UByteBufferIndexer;
 import org.bytedeco.javacpp.indexer.UByteRawIndexer;
 
 public class StraightLineDetector {
-	public List<int[]> detectVerticalLine(IplImage src)
+	public List<int[]> detectVerticalLine(IplImage src) throws Exception
 	{
 		ArrayList<int[]> lines = new ArrayList<int[]>();
 		Mat raw = new Mat(src);
@@ -63,11 +63,10 @@ public class StraightLineDetector {
 			
 			
 		}
-		raw.close();
 		return removeDuplicatedLines(lines);
 	}
 	
-	public List<int[]> detectHorizontalLine(IplImage src)
+	public List<int[]> detectHorizontalLine(IplImage src) throws Exception
 	{
 		ArrayList<int[]> lines = new ArrayList<int[]>();
 		Mat raw = new Mat(src);
@@ -116,8 +115,6 @@ public class StraightLineDetector {
 			
 			
 		}
-		
-		raw.close();
 		return removeDuplicatedLines(lines);
 	}
 	
@@ -166,12 +163,8 @@ public class StraightLineDetector {
 	
 	private boolean isSimilarLine(int[] line1, int[] line2, float threshold)
 	{
-		CvPoint pt1  = new CvPoint(line1[0], line1[1]);
-        CvPoint pt2  = new CvPoint(line2[0], line2[1]);
-        CvPoint pt3  = new CvPoint(line1[2], line1[3]);
-        CvPoint pt4  = new CvPoint(line2[2], line2[3]);
-        double d1 = Math.sqrt(Math.pow(Math.abs(pt1.x() - pt2.x()), 2) + Math.pow(Math.abs(pt1.y() - pt2.y()), 2));
-        double d2 = Math.sqrt(Math.pow(Math.abs(pt3.x() - pt4.x()), 2) + Math.pow(Math.abs(pt3.y() - pt4.y()), 2));
+        double d1 = Math.sqrt(Math.pow(Math.abs(line1[0] - line2[0]), 2) + Math.pow(Math.abs(line1[1] - line2[1]), 2));
+        double d2 = Math.sqrt(Math.pow(Math.abs(line1[2] - line2[2]), 2) + Math.pow(Math.abs(line1[3] - line2[3]), 2));
 		return d1 <= threshold && d2 <= threshold; 
 	}
 	
